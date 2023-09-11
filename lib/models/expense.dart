@@ -33,3 +33,32 @@ class Expense {
     return formatter.format(date);
   }
 }
+
+//this class is for a specific category like leisure or food.
+class ExpenseBucket {
+  ExpenseBucket({
+    required this.category,
+    required this.expenses,
+  });
+
+  //create a filter that sieves out expenses for a particular category
+
+  ExpenseBucket.forCategory(List<Expense> allExpenses, this.category)
+      : expenses = allExpenses
+            .where((expense) => expense.category == category)
+            .toList();
+
+  final Category category;
+  //create a list called expenses from the Expense class
+  final List<Expense> expenses;
+
+  double get totalExpenses {
+    double sum = 0;
+    //create a variable that accesses the lists of Expenses and adds the expenses.amount
+    for (final expenses in expenses) {
+      sum = sum + expenses.amount;
+    }
+
+    return sum;
+  }
+}

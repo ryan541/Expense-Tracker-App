@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/widgets/chart/chart.dart';
 import 'package:scheduler/widgets/expenses_list/expense_list.dart';
 import 'package:scheduler/models/expense.dart';
 import 'package:scheduler/widgets/new_expense.dart';
@@ -84,7 +85,7 @@ class _ExpensesState extends State<Expenses> {
       ),
       body: Column(
         children: [
-          const Text('The Chart'),
+          Chart(expenses: _registeredExpenses),
           Expanded(child: mainContent),
         ],
       ),
