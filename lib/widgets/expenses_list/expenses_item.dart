@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:scheduler/models/expense.dart';
 
 class ExpenseItem extends StatelessWidget {
-  const ExpenseItem(this.expense, {super.key});
+  ExpenseItem(this.expense, {super.key});
 
   final Expense expense;
+
+  // final formatter = NumberFormat.currency(locale: 'kenya');
+
+  // final formattedExpense = formatter.format(expense.amount);
 
   @override
   Widget build(BuildContext context) {

@@ -84,92 +84,98 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
-      child: Column(
-        //mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            //onChanged: _saveTitleInput,
-            controller: _titleController,
-            maxLength: 50,
-            decoration: const InputDecoration(
-              label: Text('Title'),
-            ),
-          ),
-          Row(
+    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+    return SizedBox(
+      height: double.infinity,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(20, 60, 20, keyboardSpace + 20),
+          child: Column(
+            //mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  controller: _amountController,
-                  decoration: const InputDecoration(
-                    prefixText: '\$ ',
-                    label: Text('Amount'),
-                  ),
+              TextField(
+                //onChanged: _saveTitleInput,
+                controller: _titleController,
+                maxLength: 50,
+                decoration: const InputDecoration(
+                  label: Text('Title'),
                 ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      controller: _amountController,
+                      decoration: const InputDecoration(
+                        prefixText: '\$ ',
+                        label: Text('Amount'),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(_selectedDate == null
+                            ? 'Selected Date'
+                            : formatter.format(_selectedDate!)),
+                        IconButton(
+                          onPressed: _presentDatePicker,
+                          icon: const Icon(Icons.calendar_month),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
-                width: 16,
+                height: 16,
               ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(_selectedDate == null
-                        ? 'Selected Date'
-                        : formatter.format(_selectedDate!)),
-                    IconButton(
-                      onPressed: _presentDatePicker,
-                      icon: const Icon(Icons.calendar_month),
-                    ),
-                  ],
-                ),
-              ),
+              Row(
+                children: [
+                  DropdownButton(
+                      value: _selectedCategory,
+                      items: Category.values
+                          .map(
+                            (category) => DropdownMenuItem(
+                              value: category,
+                              child: Text(
+                                category.name.toUpperCase(),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
+                        setState(() {
+                          _selectedCategory = value;
+                        });
+                      }),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _submitExpenseData();
+                    },
+                    child: const Text('Save Expense'),
+                  ),
+                ],
+              )
             ],
           ),
-          const SizedBox(
-            height: 16,
-          ),
-          Row(
-            children: [
-              DropdownButton(
-                  value: _selectedCategory,
-                  items: Category.values
-                      .map(
-                        (category) => DropdownMenuItem(
-                          value: category,
-                          child: Text(
-                            category.name.toUpperCase(),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    setState(() {
-                      _selectedCategory = value;
-                    });
-                  }),
-              const Spacer(),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  _submitExpenseData();
-                },
-                child: const Text('Save Expense'),
-              ),
-            ],
-          )
-        ],
+        ),
       ),
     );
   }
